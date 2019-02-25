@@ -1,4 +1,3 @@
-# get_set_infoAPIs
-# get_set_infoAPIs
-# get_set_infoAPIs
 # get-set_infoAPIs
+APIs of read and write type to access data through JEasyOPC
+
