@@ -1,4 +1,3 @@
-package getInfo;
 
 /* To be imported on VRMilling2
 import javafish.clients.opc.component.OpcGroup;
@@ -16,12 +15,14 @@ import javafish.clients.opc.exception.UnableRemoveItemException;
 import javafish.clients.opc.variant.Variant;
 import javafish.clients.opc.variant.VariantList;
  */
-public class getTag {
+import java.util.ArrayList;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+public class getAllInfo {
 	
-	//instantiate tagName variable
-	private String tagName;
-	//JOpc jopc = new JOpc("localhost", "RSLinx OPC Server", "JOPC1");
-	    
+	public static void main(String[] args) {
+		//JOpc jopc = new JOpc("localhost", "RSLinx OPC Server", "JOPC1");
+		
 	    /*try {
 	      JOpc.coInitialize();
 	    }
@@ -29,16 +30,10 @@ public class getTag {
 	      e1.printStackTrace();
 	    }*/
 	    
-	    public getTag(String tagNameGiven) {
-	    		tagName = tagNameGiven;
-	    	
-	    }
-	    public getTag() {
-	    		tagName = "NaN";
-	    }
+	    public JSONObject getTag(String tagNameGiven) {
 	    
 	    //create item with given tag name
-	    OpcItem item1 = new OpcItem(tagNameGiven, true, "AdvManLab");
+	    OpcItem item1 = new OpcItem(tagName, true, "AdvManLab");
 	    
 	    //create opc group
 	    OpcGroup group = new OpcGroup("group1", true, 500, 0.0f);
@@ -81,8 +76,26 @@ public class getTag {
         }
 	    
 	    
-		
-		
+	    JSONObject jObj = new JSONObject();
+	    jObj.put(itemRead,itemReadValue );
+	    return jObj;
+	    
+	    
+	    }
+	    
+	    
+	    public ArrayList getTags(ArrayList<String> tagNamesGiven) {
+	    	
+	    	//to be implemented
+	    }
+	    public void getAvailableTagsInGroup(String groupName) {
+	    	//to be implemented
+	    	
+	    }
+	    public void getExistingGroups() {
+	    	//to be implemented
+	    }
 
+	}
 
 }
