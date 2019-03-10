@@ -18,6 +18,7 @@ import javafish.clients.opc.variant.VariantList;
 import java.util.ArrayList;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
+
 public class getAllInfo {
 	
 	public static void main(String[] args) {
@@ -30,6 +31,10 @@ public class getAllInfo {
 	      e1.printStackTrace();
 	    }*/
 	    
+		/**
+		 * @param tagNameGiven a user inputed tag name to request data from
+		 * @return a JSON Object with data type and value 
+		 */
 	    public JSONObject getTag(String tagNameGiven) {
 	    
 	    //create item with given tag name
@@ -54,6 +59,10 @@ public class getAllInfo {
 	    		itemRead = jopc.synchReadItem(group, item1);
 	    		itemReadValue = jopc.synchReadItem(group, item1).getValue();
 	    		System.out.println(itemRead + "value: " itemReadValue);
+	    		   
+	    		JSONObject jObj = new JSONObject();
+	    		jObj.put(itemRead, itemReadValue);
+	    		return jObj;
 	    		
 	    }
 	    catch (ConnectivityException e) {
@@ -75,10 +84,7 @@ public class getAllInfo {
           e.printStackTrace();
         }
 	    
-	    
-	    JSONObject jObj = new JSONObject();
-	    jObj.put(itemRead,itemReadValue );
-	    return jObj;
+	 
 	    
 	    
 	    }
