@@ -35,7 +35,7 @@ public class getAllInfo {
 		 * @param tagNameGiven a user inputed tag name to request data from
 		 * @return a JSON Object with data type and value 
 		 */
-	    public JSONObject getTag(String tagNameGiven) {
+	    public String getTag(String tagNameGiven) {
 	    
 	    //create item with given tag name
 	    OpcItem item1 = new OpcItem(tagName, true, "AdvManLab");
@@ -57,12 +57,13 @@ public class getAllInfo {
 	    		
 	    		OpcItem itemRead = null;
 	    		itemRead = jopc.synchReadItem(group, item1);
-	    		itemReadValue = jopc.synchReadItem(group, item1).getValue();
-	    		System.out.println(itemRead + "value: " itemReadValue);
+	    		itemReadValue = itemRead.getValue();
+	    		itemReadDataType = itemRead.getDataType();
+	    		System.out.println("Data Type: " + itemReadDataType + "Value: " itemReadValue);
 	    		   
 	    		JSONObject jObj = new JSONObject();
 	    		jObj.put(itemRead, itemReadValue);
-	    		return jObj;
+	    		return jObj.toJSONString();
 	    		
 	    }
 	    catch (ConnectivityException e) {
