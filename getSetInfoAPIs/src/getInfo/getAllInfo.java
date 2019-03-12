@@ -1,5 +1,4 @@
 
-/* To be imported on VRMilling2
 import javafish.clients.opc.component.OpcGroup;
 import javafish.clients.opc.component.OpcItem;
 import javafish.clients.opc.exception.CoInitializeException;
@@ -14,7 +13,7 @@ import javafish.clients.opc.exception.UnableRemoveGroupException;
 import javafish.clients.opc.exception.UnableRemoveItemException;
 import javafish.clients.opc.variant.Variant;
 import javafish.clients.opc.variant.VariantList;
- */
+
 import java.util.ArrayList;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
@@ -22,14 +21,14 @@ import org.json.simple.JSONArray;
 public class getAllInfo {
 	
 	public static void main(String[] args) {
-		//JOpc jopc = new JOpc("localhost", "RSLinx OPC Server", "JOPC1");
+		JOpc jopc = new JOpc("localhost", "RSLinx OPC Server", "JOPC1");
 		
-	    /*try {
+	    try {
 	      JOpc.coInitialize();
 	    }
 	    catch (CoInitializeException e1) {
 	      e1.printStackTrace();
-	    }*/
+	    }
 	    
 		/**
 		 * @param tagNameGiven a user inputed tag name to request data from
