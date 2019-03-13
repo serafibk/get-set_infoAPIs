@@ -1,4 +1,5 @@
-
+/* To be imported on VRMilling2
+import javafish.clients.opc.JOpc;
 import javafish.clients.opc.component.OpcGroup;
 import javafish.clients.opc.component.OpcItem;
 import javafish.clients.opc.exception.CoInitializeException;
@@ -13,29 +14,31 @@ import javafish.clients.opc.exception.UnableRemoveGroupException;
 import javafish.clients.opc.exception.UnableRemoveItemException;
 import javafish.clients.opc.variant.Variant;
 import javafish.clients.opc.variant.VariantList;
-
+*/
 import java.util.ArrayList;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 
 public class getAllInfo {
 	
-	public static void main(String[] args) {
-		JOpc jopc = new JOpc("localhost", "RSLinx OPC Server", "JOPC1");
+		//JOpc jopc = new JOpc("localhost", "RSLinx OPC Server", "JOPC1");
 		
-	    try {
-	      JOpc.coInitialize();
-	    }
-	    catch (CoInitializeException e1) {
-	      e1.printStackTrace();
-	    }
+	   
 	    
 		/**
 		 * @param tagNameGiven a user inputed tag name to request data from
 		 * @return a JSON Object with data type and value 
 		 */
+		@SuppressWarnings("unchecked")
 	    public String getTag(String tagNameGiven) {
-	    
+	    	
+			/*try {
+	   	      JOpc.coInitialize();
+	   	    }
+	    	 	catch (CoInitializeException e1) {
+	   	      e1.printStackTrace();
+	   	    }
+	   	    */
 	    //create item with given tag name
 	    OpcItem item1 = new OpcItem(tagName, true, "AdvManLab");
 	    
@@ -46,19 +49,19 @@ public class getAllInfo {
 	    //connect to OPC to register group/item
 	    try {
 	    		jopc.connect();
-	    		System.out.println("OPC connection successful...")
+	    		//System.out.println("OPC connection successful...")
 	    		jopc.addGroup(group);
 	    		
 	    		jopc.registerGroup(group);
-	    		System.out.println("Group registration successful...");
+	    		//System.out.println("Group registration successful...");
 	    		jopc.registerItem(group, item1);
-	    		System.out.println("Item registration successful...");
+	    		//System.out.println("Item registration successful...");
 	    		
 	    		OpcItem itemRead = null;
 	    		itemRead = jopc.synchReadItem(group, item1);
-	    		itemReadValue = itemRead.getValue();
-	    		itemReadDataType = itemRead.getDataType();
-	    		System.out.println("Data Type: " + itemReadDataType + "Value: " itemReadValue);
+	    		Variant itemReadValue = itemRead.getValue();
+	    		int itemReadDataType = itemRead.getDataType();
+	    		//System.out.println("Data Type: " + itemReadDataType + "Value: " itemReadValue);
 	    		   
 	    		JSONObject jObj = new JSONObject();
 	    		jObj.put(itemRead, itemReadValue);
@@ -86,15 +89,15 @@ public class getAllInfo {
 	    
 	 
 	    
-	    
+	    return null;
 	    }
 	    
 	    
-	    public ArrayList getTags(ArrayList<String> tagNamesGiven) {
+		public ArrayList getTags(ArrayList<String> tagNamesGiven) {
 	    	
 	    	//to be implemented
 	    }
-	    public void getAvailableTagsInGroup(String groupName) {
+	   public void getAvailableTagsInGroup(String groupName) {
 	    	//to be implemented
 	    	
 	    }
@@ -102,6 +105,6 @@ public class getAllInfo {
 	    	//to be implemented
 	    }
 
-	}
-
 }
+
+
