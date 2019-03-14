@@ -101,7 +101,12 @@ public class getAllInfo {
 	    return "Tag Name Not Found";
 	    }
 	    
-	    
+		
+		/**
+		 * 
+		 * @param tagNamesGiven
+		 * @return an ArrayList of tags with their values 
+		 */
 		public ArrayList getTags(ArrayList<String> tagNamesGiven) {
 			/*try {
 	   	      JOpc.coInitialize();
@@ -109,80 +114,105 @@ public class getAllInfo {
 	    	 	catch (CoInitializeException e1) {
 	   	      e1.printStackTrace();
 	   	    }
-	   	    */
-	    //create items with given tag names
-		ArrayList<OpcItem> items;
-		for(int i = 0; i<tagNamesGiven.size();i++) {
-			items.add(new OpcItem(tagNamesGiven[i], true, "AdvManLab"));
-		}
-	    
-	    //create opc group
-	    OpcGroup group = new OpcGroup("group1", true, 500, 0.0f);
-	    for(int i = 0;i<items.size();i++) {
-	    		group.addItem(items[i]);
-	    }
-	    
-	    //connect to OPC to register group/item
-	    try {
-	    		jopc.connect();
-	    		//System.out.println("OPC connection successful...")
-	    		jopc.addGroup(group);
-	    		
-	    		jopc.registerGroup(group);
-	    		//System.out.println("Group registration successful...");
-	    		for(int i = 0;i<items.size();i++) {
-	    			jopc.registerItem(group, items[i]);
+		   	    */
+		    //create items with given tag names
+			ArrayList<OpcItem> items;
+			for(int i = 0; i<tagNamesGiven.size();i++) {
+				items.add(new OpcItem(tagNamesGiven[i], true, "AdvManLab"));
+			}
+		    
+		    //create opc group
+		    OpcGroup group = new OpcGroup("group1", true, 500, 0.0f);
+		    for(int i = 0;i<items.size();i++) {
+		    		group.addItem(items[i]);
 		    }
-	    		//System.out.println("Item registration successful...");
-	    		
-	    		OpcItem itemRead = null;
-	    		for(int i=0;i<items.size();i++) {
-		    		itemRead = jopc.synchReadItem(group, items[i]);
-		    		variant itemReadValue = itemRead.getValue();
-		    		int itemReadDataType = itemRead.getDataType();
-	    		}
-	    		//System.out.println("Data Type: " + itemReadDataType + "Value: " itemReadValue);
-	    		   
-	    		
-	    		ArrayList<String> tagNames = new ArrayList<String>();
-	    		for(int i = 0; i<tagNames.size();i++) {
-	    			JSONObject jObj = new JSONObject();
-	    			jObj.put(itemRead, itemReadValue);
-	    			tagNames.add(jObj.toJSONString());
-	    		}
-	    		return tagNames;
-	    		
-	    		JOpc.coUninitialize();
-	    		
-	    }
-	  catch (ConnectivityException e) {
-	    e.printStackTrace();
-	  }
-      catch (ComponentNotFoundException e) {
-        e.printStackTrace();
-      } 
-      catch (UnableAddGroupException e) {
-        e.printStackTrace();
-      }  
-      catch (UnableAddItemException e) {
-        e.printStackTrace();
-      }
-      catch (SynchReadException e) {
-        e.printStackTrace();
-      }
-      catch (CoUninitializeException e) {
-        e.printStackTrace();
-      }
+		    
+		    //connect to OPC to register group/item
+		    try {
+		    		jopc.connect();
+		    		//System.out.println("OPC connection successful...")
+		    		jopc.addGroup(group);
+		    		
+		    		jopc.registerGroup(group);
+		    		//System.out.println("Group registration successful...");
+		    		for(int i = 0;i<items.size();i++) {
+		    			jopc.registerItem(group, items[i]);
+			    }
+		    		//System.out.println("Item registration successful...");
+		    		
+		    		OpcItem itemRead = null;
+		    		for(int i=0;i<items.size();i++) {
+			    		itemRead = jopc.synchReadItem(group, items[i]);
+			    		variant itemReadValue = itemRead.getValue();
+			    		int itemReadDataType = itemRead.getDataType();
+		    		}
+		    		//System.out.println("Data Type: " + itemReadDataType + "Value: " itemReadValue);
+		    		   
+		    		
+		    		ArrayList<String> tagNames = new ArrayList<String>();
+		    		for(int i = 0; i<tagNames.size();i++) {
+		    			JSONObject jObj = new JSONObject();
+		    			jObj.put(itemRead, itemReadValue);
+		    			tagNames.add(jObj.toJSONString());
+		    		}
+		    		return tagNames;
+		    		
+		    		JOpc.coUninitialize();
+		    		
+			    }
+			catch (ConnectivityException e) {
+			    e.printStackTrace();
+			  }
+		    catch (ComponentNotFoundException e) {
+		        e.printStackTrace();
+		      } 
+		    catch (UnableAddGroupException e) {
+		        e.printStackTrace();
+		      }  
+		    catch (UnableAddItemException e) {
+		        e.printStackTrace();
+		      }
+		    catch (SynchReadException e) {
+		        e.printStackTrace();
+		      }
+		    catch (CoUninitializeException e) {
+		        e.printStackTrace();
+		      }
 	    
-	 
-	    ArrayList<String> noTags = new ArrayList<String>();
-	    noTags.add("Tag Names Not Found");
-	    return noTags;
+		    finally {
+		    ArrayList<String> noTags = new ArrayList<String>();
+		    noTags.add("Tag Names Not Found");
+		    return noTags;
+		    }
+	   }
+		
+		
+	   /**
+	    * 
+	    * @param groupName
+	    * @return array of tag names in given group
+	    */
+	   public String[] getAvailableTagsInGroup(String groupName) {
+	   
+		   JOpcBrowser browser = new JOpcBrowser("localhost", "RSLinx OPC Server", "JOPCBROWSER1");
+		   
+		   try {
+			   browser.connect();
+			   String[] groups = browser.getOpcBranch("");
+			   return groups;
+		   }
+		   catch(ConnectivityException | UnableBrowseBranchException | UnableIBrowseException e) {
+			   e.printStackTrace();
+		   }
+		   String[] noGroups = new String[]{"There are no existing items in this group"}; 
+		   return noGroups;
 	    }
-	   public void getAvailableTagsInGroup(String groupName) {
-	    	//to be implemented
-	    	
-	    }
+	   
+	   /**
+	    * 
+	    * 
+	    * @return an array of group names
+	    */
 	   public String[] getExistingGroups() {
 	   
 		   JOpcBrowser browser = new JOpcBrowser("localhost", "RSLinx OPC Server", "JOPCBROWSER1");
