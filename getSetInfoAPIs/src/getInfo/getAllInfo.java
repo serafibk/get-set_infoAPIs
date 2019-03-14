@@ -89,20 +89,97 @@ public class getAllInfo {
 	    
 	 
 	    
-	    return null;
+	    return "Tag Name Not Found";
 	    }
 	    
 	    
 		public ArrayList getTags(ArrayList<String> tagNamesGiven) {
-	    	
-	    	//to be implemented
+			/*try {
+	   	      JOpc.coInitialize();
+	   	    }
+	    	 	catch (CoInitializeException e1) {
+	   	      e1.printStackTrace();
+	   	    }
+	   	    */
+	    //create items with given tag names
+		ArrayList<OpcItem> items;
+		for(int i = 0; i<tagNamesGiven.size();i++) {
+			items.add(new OpcItem(tagNamesGiven[i], true, "AdvManLab"));
+		}
+	    
+	    //create opc group
+	    OpcGroup group = new OpcGroup("group1", true, 500, 0.0f);
+	    for(int i = 0;i<items.size();i++) {
+	    		group.addItem(items[i]);
+	    }
+	    
+	    //connect to OPC to register group/item
+	    try {
+	    		jopc.connect();
+	    		//System.out.println("OPC connection successful...")
+	    		jopc.addGroup(group);
+	    		
+	    		jopc.registerGroup(group);
+	    		//System.out.println("Group registration successful...");
+	    		for(int i = 0;i<items.size();i++) {
+	    			jopc.registerItem(group, items[i]);
+		    }
+	    		//System.out.println("Item registration successful...");
+	    		
+	    		OpcItem itemRead = null;
+	    		for(int i=0;i<items.size();i++) {
+		    		itemRead = jopc.synchReadItem(group, items[i]);
+		    		variant itemReadValue = itemRead.getValue();
+		    		int itemReadDataType = itemRead.getDataType();
+	    		}
+	    		//System.out.println("Data Type: " + itemReadDataType + "Value: " itemReadValue);
+	    		   
+	    		
+	    		ArrayList<String> tagNames = new ArrayList<String>();
+	    		for(int i = 0; i<tagNames.size();i++) {
+	    			JSONObject jObj = new JSONObject();
+	    			jObj.put(itemRead, itemReadValue);
+	    			tagNames.add(jObj.toJSONString());
+	    		}
+	    		return tagNames;
+	    		
+	    }
+	  catch (ConnectivityException e) {
+	    e.printStackTrace();
+	  }
+      catch (ComponentNotFoundException e) {
+        e.printStackTrace();
+      } 
+      catch (UnableAddGroupException e) {
+        e.printStackTrace();
+      }  
+      catch (UnableAddItemException e) {
+        e.printStackTrace();
+      }
+      catch (SynchReadException e) {
+        e.printStackTrace();
+      }
+      catch (CoUninitializeException e) {
+        e.printStackTrace();
+      }
+	    
+	 
+	    ArrayList<String> noTags = new ArrayList<String>();
+	    noTags.add("Tag Names Not Found");
+	    return noTags;
 	    }
 	   public void getAvailableTagsInGroup(String groupName) {
 	    	//to be implemented
 	    	
 	    }
-	    public void getExistingGroups() {
-	    	//to be implemented
+	   public void getExistingGroups() {
+	    	
+		   
+		   
+		   
+		   
+		   
+		   
 	    }
 
 }
