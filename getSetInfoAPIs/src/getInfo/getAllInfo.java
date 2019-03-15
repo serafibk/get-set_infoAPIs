@@ -107,17 +107,17 @@ public class getAllInfo {
 		 * @param tagNamesGiven
 		 * @return an ArrayList of tags with their values 
 		 */
-		public ArrayList getTags(ArrayList<String> tagNamesGiven) {
-			/*try {
+		public ArrayList getTags(String[] tagNamesGiven) {
+			try {
 	   	      JOpc.coInitialize();
 	   	    }
 	    	 	catch (CoInitializeException e1) {
 	   	      e1.printStackTrace();
 	   	    }
-		   	    */
+		   	    
 		    //create items with given tag names
 			ArrayList<OpcItem> items;
-			for(int i = 0; i<tagNamesGiven.size();i++) {
+			for(int i = 0; i<tagNamesGiven.length;i++) {
 				items.add(new OpcItem(tagNamesGiven[i], true, "AdvManLab"));
 			}
 		    
@@ -198,7 +198,7 @@ public class getAllInfo {
 		   
 		   try {
 			   browser.connect();
-			   String[] groups = browser.getOpcBranch("");
+			   String[] groups = browser.getOpcBranch();
 			   return groups;
 		   }
 		   catch(ConnectivityException | UnableBrowseBranchException | UnableIBrowseException e) {
@@ -219,7 +219,7 @@ public class getAllInfo {
 		   
 		   try {
 			   browser.connect();
-			   String[] groups = browser.getOpcBranch("");
+			   String[] groups = browser.getOpcBranch();
 			   return groups;
 		   }
 		   catch(ConnectivityException | UnableBrowseBranchException | UnableIBrowseException e) {
@@ -229,20 +229,6 @@ public class getAllInfo {
 		   return noGroups;
 	    }
 	   
-	   public String[] getExistingServers() {
-		  
-		   JOpcBrowser browser = new JOpcBrowser("localhost", "RSLinx OPC Server", "JOPCBROWSER1");
-		   
-		   try {
-			   browser.connect();
-			   String[] servers = browser.getOpcServers("localhost");
-			   return servers;
-		   }
-		   catch (ConnectivityException | HostException | NotFoundServersExeption e) {
-			   e.printStackTrace();
-		   }
-		   
-	   }
 
 }
 
