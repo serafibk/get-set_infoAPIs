@@ -1,6 +1,6 @@
 package getInfo;
 
-/* To be imported on VRMilling2
+
 import javafish.clients.opc.JOpc;
 import javafish.clients.opc.component.OpcGroup;
 import javafish.clients.opc.component.OpcItem;
@@ -20,8 +20,8 @@ import javafish.clients.opc.exception.HostException;
 import javafish.clients.opc.exception.NotFoundServersException;
 import javafish.clients.opc.variant.Variant;
 import javafish.clients.opc.variant.VariantList;
-import javafish.clients.opc.browser
-*/
+import javafish.clients.opc.browser;
+
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.LinkedHashMap;
@@ -107,7 +107,7 @@ public class getAllInfo {
 		 * @param tagNamesGiven
 		 * @return an ArrayList of tags with their values 
 		 */
-		public ArrayList getTags(String[] tagNamesGiven) {
+		public ArrayList<String> getTags(String[] tagNamesGiven) {
 			try {
 	   	      JOpc.coInitialize();
 	   	    }
