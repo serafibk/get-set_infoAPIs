@@ -41,13 +41,13 @@ public class getAllInfo {
 		@SuppressWarnings("unchecked")
 	    public String getTag(String tagNameGiven) {
 	    	
-			/*try {
+			try {
 	   	      JOpc.coInitialize();
 	   	    }
 	    	 	catch (CoInitializeException e1) {
 	   	      e1.printStackTrace();
 	   	    }
-	   	    */
+	   	    
 	    //create item with given tag name
 	    OpcItem item1 = new OpcItem(tagNameGiven, true, "AdvManLab");
 	    
@@ -96,7 +96,7 @@ public class getAllInfo {
           e.printStackTrace();
         }
 	    
-	 
+	    JOpc.coUninitialize();	 
 	    
 	    return "Tag Name Not Found";
 	    }
@@ -116,7 +116,7 @@ public class getAllInfo {
 	   	    }
 		   	    
 		    //create items with given tag names
-			ArrayList<OpcItem> items;
+			ArrayList<OpcItem> items = new ArrayList<OpcItem>();
 			for(int i = 0; i<tagNamesGiven.length;i++) {
 				items.add(new OpcItem(tagNamesGiven[i], true, "AdvManLab"));
 			}
@@ -141,20 +141,19 @@ public class getAllInfo {
 		    		//System.out.println("Item registration successful...");
 		    		
 		    		OpcItem itemRead = null;
-		    		for(int i=0;i<items.size();i++) {
-			    		itemRead = jopc.synchReadItem(group, items[i]);
-			    		variant itemReadValue = itemRead.getValue();
-			    		int itemReadDataType = itemRead.getDataType();
-		    		}
-		    		//System.out.println("Data Type: " + itemReadDataType + "Value: " itemReadValue);
-		    		   
-		    		
 		    		ArrayList<String> tagNames = new ArrayList<String>();
-		    		for(int i = 0; i<tagNames.size();i++) {
-		    			JSONObject jObj = new JSONObject();
+		    		for(int i=0;i<items.size();i++) {
+		    			//read data
+			    		itemRead = jopc.synchReadItem(group, items.get(i));
+			    		Variant itemReadValue = itemRead.getValue();
+			    		int itemReadDataType = itemRead.getDataType();
+			    		//store data in json object then arraylist
+			    		JSONObject jObj = new JSONObject();
 		    			jObj.put(itemRead, itemReadValue);
 		    			tagNames.add(jObj.toJSONString());
 		    		}
+		    		//System.out.println("Data Type: " + itemReadDataType + "Value: " itemReadValue);
+		    		   
 		    		return tagNames;
 		    		
 		    		JOpc.coUninitialize();
@@ -180,9 +179,9 @@ public class getAllInfo {
 		      }
 	    
 		    finally {
-		    ArrayList<String> noTags = new ArrayList<String>();
-		    noTags.add("Tag Names Not Found");
-		    return noTags;
+			    ArrayList<String> noTags = new ArrayList<String>();
+			    noTags.add("Tag Names Not Found");
+			    return noTags;
 		    }
 	   }
 		
@@ -198,14 +197,14 @@ public class getAllInfo {
 		   
 		   try {
 			   browser.connect();
-			   String[] groups = browser.getOpcBranch();
-			   return groups;
+			   String[] items = browser.getOpcItems(groupName);
+			   return items;
 		   }
 		   catch(ConnectivityException | UnableBrowseBranchException | UnableIBrowseException e) {
 			   e.printStackTrace();
 		   }
-		   String[] noGroups = new String[]{"There are no existing items in this group"}; 
-		   return noGroups;
+		   String[] noItems = new String[]{"There are no existing items in this group"}; 
+		   return noItems;
 	    }
 	   
 	   /**
