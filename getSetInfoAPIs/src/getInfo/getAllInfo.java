@@ -179,10 +179,11 @@ public class getAllInfo {
 		    catch (CoUninitializeException e) {
 		        e.printStackTrace();
 		      }
-	    
-			    ArrayList<String> noTags = new ArrayList<String>();
-			    noTags.add("Tag Names Not Found");
-			    return noTags;
+		    	JOpc.coUninitialize();
+			    
+		    	ArrayList<String> noTags = new ArrayList<String>();
+			noTags.add("Tag Names Not Found");
+			return noTags;
 		    
 	   }
 		
@@ -206,7 +207,7 @@ public class getAllInfo {
 		   }
 		   
 		   
-		   
+		   JOpcBrowser.coUninitialize();
 		   
 		   
 		   List<String> noItems = new ArrayList<String>();
@@ -232,9 +233,14 @@ public class getAllInfo {
 			   e.printStackTrace();
 		   }
 		 
-			   List<String> noGroups = new ArrayList<String>();
-			   noGroups.add("There are no existing groups"); 
-			   return noGroups;
+		   
+		   //maybe try group.getItems() from OPC group class
+		   
+		   JOpcBrowser.coUninitialize();
+			   
+		   List<String> noGroups = new ArrayList<String>();
+		   noGroups.add("There are no existing groups"); 
+		   return noGroups;
 		   
 	    }
 	   
