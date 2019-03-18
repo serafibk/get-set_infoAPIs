@@ -18,19 +18,23 @@ import javafish.clients.opc.exception.UnableBrowseBranchException;
 import javafish.clients.opc.exception.UnableIBrowseException;
 import javafish.clients.opc.exception.HostException;
 import javafish.clients.opc.exception.NotFoundServersException;
+import javafish.clients.opc.exception.UnableBrowseLeafException;
 import javafish.clients.opc.variant.Variant;
 import javafish.clients.opc.variant.VariantList;
-import javafish.clients.opc.browser;
+import javafish.clients.opc.browser.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.List;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 
 public class getAllInfo {
 	
-		//JOpc jopc = new JOpc("localhost", "RSLinx OPC Server", "JOPC1");
+		JOpc jopc = new JOpc("localhost", "RSLinx OPC Server", "JOPC1");
 		
 	   
 	    
@@ -124,7 +128,7 @@ public class getAllInfo {
 		    //create opc group
 		    OpcGroup group = new OpcGroup("group1", true, 500, 0.0f);
 		    for(int i = 0;i<items.size();i++) {
-		    		group.addItem(items[i]);
+		    		group.addItem(items.get(i));
 		    }
 		    
 		    //connect to OPC to register group/item
@@ -136,7 +140,7 @@ public class getAllInfo {
 		    		jopc.registerGroup(group);
 		    		//System.out.println("Group registration successful...");
 		    		for(int i = 0;i<items.size();i++) {
-		    			jopc.registerItem(group, items[i]);
+		    			jopc.registerItem(group, items.get(i));
 			    }
 		    		//System.out.println("Item registration successful...");
 		    		
@@ -155,8 +159,6 @@ public class getAllInfo {
 		    		//System.out.println("Data Type: " + itemReadDataType + "Value: " itemReadValue);
 		    		   
 		    		return tagNames;
-		    		
-		    		JOpc.coUninitialize();
 		    		
 			    }
 			catch (ConnectivityException e) {
@@ -178,11 +180,10 @@ public class getAllInfo {
 		        e.printStackTrace();
 		      }
 	    
-		    finally {
 			    ArrayList<String> noTags = new ArrayList<String>();
 			    noTags.add("Tag Names Not Found");
 			    return noTags;
-		    }
+		    
 	   }
 		
 		
@@ -191,19 +192,25 @@ public class getAllInfo {
 	    * @param groupName
 	    * @return array of tag names in given group
 	    */
-	   public String[] getAvailableTagsInGroup(String groupName) {
+	   public List<String> getAvailableTagsInGroup(String groupName) {
 	   
 		   JOpcBrowser browser = new JOpcBrowser("localhost", "RSLinx OPC Server", "JOPCBROWSER1");
 		   
 		   try {
 			   browser.connect();
-			   String[] items = browser.getOpcItems(groupName);
-			   return items;
+			   String[] items = browser.getOpcItems(groupName, true);
+			   return Arrays.asList(items);
 		   }
-		   catch(ConnectivityException | UnableBrowseBranchException | UnableIBrowseException e) {
+		   catch(ConnectivityException | UnableBrowseLeafException | UnableIBrowseException | UnableAddGroupException | UnableAddItemException e) {
 			   e.printStackTrace();
 		   }
-		   String[] noItems = new String[]{"There are no existing items in this group"}; 
+		   
+		   
+		   
+		   
+		   
+		   List<String> noItems = new ArrayList<String>();
+		   noItems.add("There are no existing items in this group"); 
 		   return noItems;
 	    }
 	   
@@ -212,23 +219,24 @@ public class getAllInfo {
 	    * 
 	    * @return an array of group names
 	    */
-	   public String[] getExistingGroups() {
+	   public List<String> getExistingGroups() {
 	   
 		   JOpcBrowser browser = new JOpcBrowser("localhost", "RSLinx OPC Server", "JOPCBROWSER1");
 		   
 		   try {
 			   browser.connect();
-			   String[] groups = browser.getOpcBranch();
-			   return groups;
+			   String[] groups = browser.getOpcBranch("");
+			   return Arrays.asList(groups);
 		   }
 		   catch(ConnectivityException | UnableBrowseBranchException | UnableIBrowseException e) {
 			   e.printStackTrace();
 		   }
-		   String[] noGroups = new String[]{"There are no existing groups"}; 
-		   return noGroups;
+		 
+			   List<String> noGroups = new ArrayList<String>();
+			   noGroups.add("There are no existing groups"); 
+			   return noGroups;
+		   
 	    }
 	   
 
 }
-
-
