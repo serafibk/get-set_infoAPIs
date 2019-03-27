@@ -198,11 +198,24 @@ public class getAllInfo {
 		   JOpcBrowser browser = new JOpcBrowser("localhost", "RSLinx OPC Server", "JOPCBROWSER1");
 		   
 		   try {
+			   JOpcBrowser.coInitialize();
+		   }
+		   catch(CoInitializeException e) {
+			   e.printStackTrace();
+		   }
+		   
+		   try {
 			   browser.connect();
-			   String[] items = browser.getOpcItems(groupName, true);
+			   browser.getOpcBranch("");
+			   String[] items = browser.getOpcItems(groupName + ".Online", true);
+			   if(items.length == 0) {
+				   List<String> noItems = new ArrayList<String>();
+				   noItems.add("All tags are offline in "+ groupName);
+				   return noItems;
+			   }
 			   return Arrays.asList(items);
 		   }
-		   catch(ConnectivityException | UnableBrowseLeafException | UnableIBrowseException | UnableAddGroupException | UnableAddItemException e) {
+		   catch(ConnectivityException | UnableBrowseLeafException | UnableIBrowseException | UnableAddGroupException | UnableAddItemException | UnableBrowseBranchException e) {
 			   e.printStackTrace();
 		   }
 		   
@@ -225,6 +238,13 @@ public class getAllInfo {
 		   JOpcBrowser browser = new JOpcBrowser("localhost", "RSLinx OPC Server", "JOPCBROWSER1");
 		   
 		   try {
+			   JOpcBrowser.coInitialize();
+		   }
+		   catch(CoInitializeException e) {
+			   e.printStackTrace();
+		   }
+		   
+		   try {
 			   browser.connect();
 			   String[] groups = browser.getOpcBranch("");
 			   return Arrays.asList(groups);
@@ -232,9 +252,7 @@ public class getAllInfo {
 		   catch(ConnectivityException | UnableBrowseBranchException | UnableIBrowseException e) {
 			   e.printStackTrace();
 		   }
-		 
-		   
-		   //maybe try group.getItems() from OPC group class
+		
 		   
 		   JOpcBrowser.coUninitialize();
 			   
