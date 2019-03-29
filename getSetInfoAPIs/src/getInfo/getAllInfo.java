@@ -34,7 +34,7 @@ import org.json.simple.JSONArray;
 
 public class getAllInfo {
 	
-		JOpc jopc = new JOpc("localhost", "RSLinx OPC Server", "JOPC1");
+		private JOpc jopc = new JOpc("localhost", "RSLinx OPC Server", "JOPC1");
 		
 	   
 	    
@@ -43,17 +43,17 @@ public class getAllInfo {
 		 * @return a JSON Object with data type and value 
 		 */
 		@SuppressWarnings("unchecked")
-	    public String getTag(String tagNameGiven) {
+	    public OpcItem getTag(String tagNameGiven, String groupName) {
 	    	
 			try {
 	   	      JOpc.coInitialize();
 	   	    }
-	    	 	catch (CoInitializeException e1) {
+	    	catch (CoInitializeException e1) {
 	   	      e1.printStackTrace();
 	   	    }
 	   	    
 	    //create item with given tag name
-	    OpcItem item1 = new OpcItem(tagNameGiven, true, "AdvManLab");
+	    OpcItem item1 = new OpcItem(tagNameGiven, true, groupName);
 	    
 	    //create opc group
 	    OpcGroup group = new OpcGroup("group1", true, 500, 0.0f);
@@ -78,7 +78,7 @@ public class getAllInfo {
 	    		   
 	    		JSONObject jObj = new JSONObject();
 	    		jObj.put(itemRead, itemReadValue);
-	    		return jObj.toJSONString();
+	    		return itemRead;
 	    		
 	    }
 	    catch (ConnectivityException e) {
@@ -102,7 +102,7 @@ public class getAllInfo {
 	    
 	    JOpc.coUninitialize();	 
 	    
-	    return "Tag Name Not Found";
+	    return null;
 	    }
 	    
 		
@@ -111,18 +111,18 @@ public class getAllInfo {
 		 * @param tagNamesGiven
 		 * @return an ArrayList of tags with their values 
 		 */
-		public ArrayList<String> getTags(String[] tagNamesGiven) {
+		public ArrayList<String> getTags(String[] tagNamesGiven, String[] groupNamesGiven) {
 			try {
 	   	      JOpc.coInitialize();
 	   	    }
-	    	 	catch (CoInitializeException e1) {
+	    	catch (CoInitializeException e1) {
 	   	      e1.printStackTrace();
 	   	    }
 		   	    
 		    //create items with given tag names
 			ArrayList<OpcItem> items = new ArrayList<OpcItem>();
 			for(int i = 0; i<tagNamesGiven.length;i++) {
-				items.add(new OpcItem(tagNamesGiven[i], true, "AdvManLab"));
+				items.add(new OpcItem(tagNamesGiven[i], true, groupNamesGiven[i]));
 			}
 		    
 		    //create opc group
@@ -179,11 +179,12 @@ public class getAllInfo {
 		    catch (CoUninitializeException e) {
 		        e.printStackTrace();
 		      }
-		    	JOpc.coUninitialize();
-			    
-		    	ArrayList<String> noTags = new ArrayList<String>();
-			noTags.add("Tag Names Not Found");
-			return noTags;
+		    
+		    
+		    JOpc.coUninitialize();
+			    ArrayList<String> noTags = new ArrayList<String>();
+			    noTags.add("Tag Names Not Found");
+			    return noTags;
 		    
 	   }
 		
@@ -195,8 +196,8 @@ public class getAllInfo {
 	    */
 	   public List<String> getAvailableTagsInGroup(String groupName) {
 	   
-		   JOpcBrowser browser = new JOpcBrowser("localhost", "RSLinx OPC Server", "JOPCBROWSER1");
-		   
+		   JOpcBrowser browser = new JOpcBrowser("localhost", "RSLinx OPC Server", "BROWSER");
+		  
 		   try {
 			   JOpcBrowser.coInitialize();
 		   }
@@ -210,22 +211,21 @@ public class getAllInfo {
 			   String[] items = browser.getOpcItems(groupName + ".Online", true);
 			   if(items.length == 0) {
 				   List<String> noItems = new ArrayList<String>();
-				   noItems.add("All tags are offline in "+ groupName);
-				   return noItems;
+				   noItems.add("All tags are offline in " + groupName);
 			   }
 			   return Arrays.asList(items);
 		   }
 		   catch(ConnectivityException | UnableBrowseLeafException | UnableIBrowseException | UnableAddGroupException | UnableAddItemException | UnableBrowseBranchException e) {
 			   e.printStackTrace();
 		   }
-		   
-		   
+		  
 		   JOpcBrowser.coUninitialize();
 		   
 		   
 		   List<String> noItems = new ArrayList<String>();
 		   noItems.add("There are no existing items in this group"); 
 		   return noItems;
+		   
 	    }
 	   
 	   /**
@@ -252,14 +252,13 @@ public class getAllInfo {
 		   catch(ConnectivityException | UnableBrowseBranchException | UnableIBrowseException e) {
 			   e.printStackTrace();
 		   }
-		
 		   
 		   JOpcBrowser.coUninitialize();
-			   
+		   
 		   List<String> noGroups = new ArrayList<String>();
 		   noGroups.add("There are no existing groups"); 
 		   return noGroups;
-		   
+	   
 	    }
 	   
 
