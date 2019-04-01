@@ -111,7 +111,7 @@ public class getAllInfo {
 		 * @param tagNamesGiven
 		 * @return an ArrayList of tags with their values 
 		 */
-		public ArrayList<String> getTags(String[] tagNamesGiven, String[] groupNamesGiven) {
+		public ArrayList<OpcItem> getTags(String[] tagNamesGiven, String[] groupNamesGiven) {
 			try {
 	   	      JOpc.coInitialize();
 	   	    }
@@ -145,16 +145,17 @@ public class getAllInfo {
 		    		//System.out.println("Item registration successful...");
 		    		
 		    		OpcItem itemRead = null;
-		    		ArrayList<String> tagNames = new ArrayList<String>();
+		    		ArrayList<OpcItem> tagNames = new ArrayList<OpcItem>();
 		    		for(int i=0;i<items.size();i++) {
 		    			//read data
 			    		itemRead = jopc.synchReadItem(group, items.get(i));
+			    		tagNames.add(itemRead);
 			    		Variant itemReadValue = itemRead.getValue();
 			    		int itemReadDataType = itemRead.getDataType();
 			    		//store data in json object then arraylist
 			    		JSONObject jObj = new JSONObject();
 		    			jObj.put(itemRead, itemReadValue);
-		    			tagNames.add(jObj.toJSONString());
+		    			//tagNames.add(jObj.toJSONString());
 		    		}
 		    		//System.out.println("Data Type: " + itemReadDataType + "Value: " itemReadValue);
 		    		   
@@ -184,7 +185,7 @@ public class getAllInfo {
 		    JOpc.coUninitialize();
 			    ArrayList<String> noTags = new ArrayList<String>();
 			    noTags.add("Tag Names Not Found");
-			    return noTags;
+			    return null;
 		    
 	   }
 		
