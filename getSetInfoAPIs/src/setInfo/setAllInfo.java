@@ -32,6 +32,56 @@ import java.util.List;
 public class setAllInfo {
 
 	
+	private JOpc jopc = new JOpc("localhost", "RSLinx OPC Server", "JOPC");
+	
+	/**
+	 * 
+	 * @param Tag Name (string)
+	 * @param Group Name (string)
+	 * @param Tag Value (variant)
+	 * @return String that tells if write was successful or not
+	 */
+	public String writeTag(String tagName, String groupName, Variant value) {
+		
+		try {
+			JOpc.coInitialize();
+		}
+		catch(CoInitializeException e1) {
+			e1.printStackTrace();
+		}
+		
+		//create OpcItem
+		OpcItem item1 = new OpcItem(tagName, true, groupName);
+		
+		//create OpcGroup
+		OpcGroup group1 = new OpcGroup("group1", 500, true, 0.0f);
+		group1.addItem(item1);
+		
+		//connect to OPC and register group/item
+		try {
+			jopc.connect();
+			
+			//add group
+			jopc.addGroup(group1);
+			
+			//register group
+			jopc.registerGroup(group1);
+			
+			//register item
+			jopc.registerItem(group1, item1);
+			
+			item1.setValue(value);
+			
+			
+		}
+		catch(ConnectivityException | ComponentNotFoundException | UnableAddGroupException | UnableAddItemException | SynchWriteException | CoUninitializeException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+	
 	
 	
 	
