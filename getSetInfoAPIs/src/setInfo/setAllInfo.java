@@ -54,7 +54,7 @@ public class setAllInfo {
 		OpcItem item1 = new OpcItem(tagName, true, groupName);
 		
 		//create OpcGroup
-		OpcGroup group1 = new OpcGroup("group1", 500, true, 0.0f);
+		OpcGroup group1 = new OpcGroup(groupName, 500, true, 0.0f);
 		group1.addItem(item1);
 		
 		//connect to OPC and register group/item
@@ -70,8 +70,19 @@ public class setAllInfo {
 			//register item
 			jopc.registerItem(group1, item1);
 			
+			//set value of tag
 			item1.setValue(value);
 			
+			//write tag to server
+			jopc.synchWriteItem(group1, item1);
+			
+			//unregister item
+			jopc.unregisterItem(group1, item1);
+			
+			//unregister group
+			jopc.unregiserGroup(group1);
+			
+			JOpc.coUninitialize();
 			
 		}
 		catch(ConnectivityException | ComponentNotFoundException | UnableAddGroupException | UnableAddItemException | SynchWriteException | CoUninitializeException e) {
