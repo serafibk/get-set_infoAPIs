@@ -43,7 +43,7 @@ public class getAllInfo {
 		 * @return a JSON Object with data type and value 
 		 */
 		@SuppressWarnings("unchecked")
-	    public OpcItem getTag(String tagNameGiven, String groupName) {
+	    public JSONObject getTag(String tagNameGiven, String groupName) {
 	    	
 			try {
 	   	      JOpc.coInitialize();
@@ -78,7 +78,7 @@ public class getAllInfo {
 	    		   
 	    		JSONObject jObj = new JSONObject();
 	    		jObj.put(itemRead, itemReadValue);
-	    		return itemRead;
+	    		return jObj;
 	    		
 	    }
 	    catch (ConnectivityException e) {
@@ -111,7 +111,8 @@ public class getAllInfo {
 		 * @param tagNamesGiven
 		 * @return an ArrayList of tags with their values 
 		 */
-		public ArrayList<OpcItem> getTags(String[] tagNamesGiven, String[] groupNamesGiven) {
+		@SuppressWarnings("unchecked")
+		public JSONArray getTags(String[] tagNamesGiven, String[] groupNamesGiven) {
 			try {
 	   	      JOpc.coInitialize();
 	   	    }
@@ -145,21 +146,24 @@ public class getAllInfo {
 		    		//System.out.println("Item registration successful...");
 		    		
 		    		OpcItem itemRead = null;
-		    		ArrayList<OpcItem> tagNames = new ArrayList<OpcItem>();
+		    		JSONArray tagNames = new JSONArray();
 		    		for(int i=0;i<items.size();i++) {
 		    			//read data
 			    		itemRead = jopc.synchReadItem(group, items.get(i));
-			    		tagNames.add(itemRead);
 			    		Variant itemReadValue = itemRead.getValue();
 			    		int itemReadDataType = itemRead.getDataType();
 			    		//store data in json object then arraylist
 			    		JSONObject jObj = new JSONObject();
 		    			jObj.put(itemRead, itemReadValue);
-		    			//tagNames.add(jObj.toJSONString());
+		    			tagNames.add(jObj);
 		    		}
 		    		//System.out.println("Data Type: " + itemReadDataType + "Value: " itemReadValue);
-		    		   
+		    		JOpc.coUninitialize(); 
+		    		
+		    		
 		    		return tagNames;
+		    		
+		    		
 		    		
 			    }
 			catch (ConnectivityException e) {
@@ -182,7 +186,7 @@ public class getAllInfo {
 		      }
 		    
 		    
-		    JOpc.coUninitialize();
+		    
 			    ArrayList<String> noTags = new ArrayList<String>();
 			    noTags.add("Tag Names Not Found");
 			    return null;
