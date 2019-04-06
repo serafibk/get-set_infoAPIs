@@ -40,7 +40,7 @@ public class getAllInfo {
 	    
 		/**
 		 * @param tagNameGiven a user inputed tag name to request data from
-		 * @return a JSON Object with data type and value 
+		 * @return a JSON Object with tag values (name, active, access path, value, timestamp) 
 		 */
 		@SuppressWarnings("unchecked")
 	    public JSONObject getTag(String tagNameGiven, String groupName) {
@@ -77,7 +77,20 @@ public class getAllInfo {
 	    		//System.out.println("Data Type: " + itemReadDataType + "Value: " itemReadValue);
 	    		   
 	    		JSONObject jObj = new JSONObject();
-	    		jObj.put(itemRead, itemReadValue);
+	    		//add client handle
+	    		jObj.put("clientHandle", itemRead.getClientHandle());
+	    		//add item name
+	    		jObj.put("itemName", itemRead.getItemName());
+	    		//add item  activity
+	    		jObj.put("active", itemRead.isActive());
+	    		//add access path
+	    		jObj.put("accessPath", itemRead.getAccessPath());
+	    		//add time stamp
+	    		jObj.put("timeStamp", itemRead.getTimeStamp());
+	    		//add item value
+	    		jObj.put("value", itemRead.getValue());
+	    		//add item quality
+	    		jObj.put("quality", itemRead.isQuality());
 	    		return jObj;
 	    		
 	    }
@@ -150,17 +163,19 @@ public class getAllInfo {
 		    		for(int i=0;i<items.size();i++) {
 		    			//read data
 			    		itemRead = jopc.synchReadItem(group, items.get(i));
-			    		Variant itemReadValue = itemRead.getValue();
 			    		int itemReadDataType = itemRead.getDataType();
+			    		Variant itemReadValue = itemRead.getValue();
 			    		//store data in json object then arraylist
 			    		JSONObject jObj = new JSONObject();
+			    		
+			    		
 		    			jObj.put(itemRead, itemReadValue);
 		    			tagNames.add(jObj);
 		    		}
 		    		//System.out.println("Data Type: " + itemReadDataType + "Value: " itemReadValue);
 		    		JOpc.coUninitialize(); 
 		    		
-		    		
+		    	
 		    		return tagNames;
 		    		
 		    		
