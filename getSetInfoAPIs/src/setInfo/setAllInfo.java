@@ -42,7 +42,7 @@ public class setAllInfo {
 	 * @return String that tells if write was successful or not
 	 */
 	public String writeTag(String tagName, String groupName, Variant value) {
-		
+		String success; 
 		try {
 			JOpc.coInitialize();
 		}
@@ -75,6 +75,17 @@ public class setAllInfo {
 			
 			//write tag to server
 			jopc.synchWriteItem(group1, item1);
+			
+			//wait 2 sec
+			Thread.sleep(2000);
+			
+			//check to see if tag was written successfully
+			if(jopc.synchReadItem(group1, item1) != null) {
+				success = "successful writing";
+			}
+			else {
+				success = "unsuccessful writing";
+			}
 			
 			//unregister item
 			jopc.unregisterItem(group1, item1);
