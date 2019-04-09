@@ -86,7 +86,7 @@ public class getAllInfo {
 	    		//add access path
 	    		jObj.put("accessPath", itemRead.getAccessPath());
 	    		//add time stamp
-	    		jObj.put("timeStamp", itemRead.getTimeStamp());
+	    		jObj.put("timeStamp", itemRead.getTimeStamp().getTime());
 	    		//add item value
 	    		jObj.put("value", itemRead.getValue());
 	    		//add item quality
@@ -167,9 +167,20 @@ public class getAllInfo {
 			    		Variant itemReadValue = itemRead.getValue();
 			    		//store data in json object then arraylist
 			    		JSONObject jObj = new JSONObject();
-			    		
-			    		
-		    			jObj.put(itemRead, itemReadValue);
+			    		//add client handle
+			    		jObj.put("clientHandle", itemRead.getClientHandle());
+			    		//add item name
+			    		jObj.put("itemName", itemRead.getItemName());
+			    		//add item  activity
+			    		jObj.put("active", itemRead.isActive());
+			    		//add access path
+			    		jObj.put("accessPath", itemRead.getAccessPath());
+			    		//add time stamp
+			    		jObj.put("timeStamp", itemRead.getTimeStamp().getTime());
+			    		//add item value
+			    		jObj.put("value", itemRead.getValue());
+			    		//add item quality
+			    		jObj.put("quality", itemRead.isQuality());
 		    			tagNames.add(jObj);
 		    		}
 		    		//System.out.println("Data Type: " + itemReadDataType + "Value: " itemReadValue);
