@@ -38,10 +38,10 @@ public class setAllInfo {
 	 * 
 	 * @param Tag Name (string)
 	 * @param Group Name (string)
-	 * @param Tag Value (variant)
+	 * @param Tag Value (integer)
 	 * @return String that tells if write was successful or not
 	 */
-	public String writeTag(String tagName, String groupName, Variant value) {
+	public String writeTag(String tagName, String groupName, int value) {
 		String success; 
 		try {
 			JOpc.coInitialize();
@@ -71,7 +71,8 @@ public class setAllInfo {
 			jopc.registerItem(group1, item1);
 			
 			//set value of tag
-			item1.setValue(value);
+			Variant var = new Variant(value);
+			item1.setValue(var);
 			
 			//write tag to server
 			jopc.synchWriteItem(group1, item1);
@@ -103,6 +104,362 @@ public class setAllInfo {
 		
 		
 	}
+	
+	/**
+	 * 
+	 * @param Tag Name (string)
+	 * @param Group Name (string)
+	 * @param Tag Value (double)
+	 * @return String that tells if write was successful or not
+	 */
+	public String writeTag(String tagName, String groupName, double value) {
+		String success; 
+		try {
+			JOpc.coInitialize();
+		}
+		catch(CoInitializeException e1) {
+			e1.printStackTrace();
+		}
+		
+		//create OpcItem
+		OpcItem item1 = new OpcItem(tagName, true, groupName);
+		
+		//create OpcGroup
+		OpcGroup group1 = new OpcGroup(groupName, 500, true, 0.0f);
+		group1.addItem(item1);
+		
+		//connect to OPC and register group/item
+		try {
+			jopc.connect();
+			
+			//add group
+			jopc.addGroup(group1);
+			
+			//register group
+			jopc.registerGroup(group1);
+			
+			//register item
+			jopc.registerItem(group1, item1);
+			
+			//set value of tag
+			Variant var = new Variant(value);
+			item1.setValue(var);
+			
+			//write tag to server
+			jopc.synchWriteItem(group1, item1);
+			
+			//wait 2 sec
+			Thread.sleep(2000);
+			
+			//check to see if tag was written successfully
+			if(jopc.synchReadItem(group1, item1) != null) {
+				success = "successful writing";
+			}
+			else {
+				success = "unsuccessful writing";
+			}
+			
+			//unregister item
+			jopc.unregisterItem(group1, item1);
+			
+			//unregister group
+			jopc.unregiserGroup(group1);
+			
+			JOpc.coUninitialize();
+			
+		}
+		catch(ConnectivityException | ComponentNotFoundException | UnableAddGroupException | UnableAddItemException | SynchWriteException | CoUninitializeException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+	
+	/**
+	 * 
+	 * @param Tag Name (string)
+	 * @param Group Name (string)
+	 * @param Tag Value (string)
+	 * @return String that tells if write was successful or not
+	 */
+	public String writeTag(String tagName, String groupName, String value) {
+		String success; 
+		try {
+			JOpc.coInitialize();
+		}
+		catch(CoInitializeException e1) {
+			e1.printStackTrace();
+		}
+		
+		//create OpcItem
+		OpcItem item1 = new OpcItem(tagName, true, groupName);
+		
+		//create OpcGroup
+		OpcGroup group1 = new OpcGroup(groupName, 500, true, 0.0f);
+		group1.addItem(item1);
+		
+		//connect to OPC and register group/item
+		try {
+			jopc.connect();
+			
+			//add group
+			jopc.addGroup(group1);
+			
+			//register group
+			jopc.registerGroup(group1);
+			
+			//register item
+			jopc.registerItem(group1, item1);
+			
+			//set value of tag
+			Variant var = new Variant(value);
+			item1.setValue(var);
+			
+			//write tag to server
+			jopc.synchWriteItem(group1, item1);
+			
+			//wait 2 sec
+			Thread.sleep(2000);
+			
+			//check to see if tag was written successfully
+			if(jopc.synchReadItem(group1, item1) != null) {
+				success = "successful writing";
+			}
+			else {
+				success = "unsuccessful writing";
+			}
+			
+			//unregister item
+			jopc.unregisterItem(group1, item1);
+			
+			//unregister group
+			jopc.unregiserGroup(group1);
+			
+			JOpc.coUninitialize();
+			
+		}
+		catch(ConnectivityException | ComponentNotFoundException | UnableAddGroupException | UnableAddItemException | SynchWriteException | CoUninitializeException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+	
+	/**
+	 * 
+	 * @param Tag Name (string)
+	 * @param Group Name (string)
+	 * @param Tag Value (float)
+	 * @return String that tells if write was successful or not
+	 */
+	public String writeTag(String tagName, String groupName, float value) {
+		String success; 
+		try {
+			JOpc.coInitialize();
+		}
+		catch(CoInitializeException e1) {
+			e1.printStackTrace();
+		}
+		
+		//create OpcItem
+		OpcItem item1 = new OpcItem(tagName, true, groupName);
+		
+		//create OpcGroup
+		OpcGroup group1 = new OpcGroup(groupName, 500, true, 0.0f);
+		group1.addItem(item1);
+		
+		//connect to OPC and register group/item
+		try {
+			jopc.connect();
+			
+			//add group
+			jopc.addGroup(group1);
+			
+			//register group
+			jopc.registerGroup(group1);
+			
+			//register item
+			jopc.registerItem(group1, item1);
+			
+			//set value of tag
+			Variant var = new Variant(value);
+			item1.setValue(var);
+			
+			//write tag to server
+			jopc.synchWriteItem(group1, item1);
+			
+			//wait 2 sec
+			Thread.sleep(2000);
+			
+			//check to see if tag was written successfully
+			if(jopc.synchReadItem(group1, item1) != null) {
+				success = "successful writing";
+			}
+			else {
+				success = "unsuccessful writing";
+			}
+			
+			//unregister item
+			jopc.unregisterItem(group1, item1);
+			
+			//unregister group
+			jopc.unregiserGroup(group1);
+			
+			JOpc.coUninitialize();
+			
+		}
+		catch(ConnectivityException | ComponentNotFoundException | UnableAddGroupException | UnableAddItemException | SynchWriteException | CoUninitializeException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+	
+	/**
+	 * 
+	 * @param Tag Name (string)
+	 * @param Group Name (string)
+	 * @param Tag Value (byte)
+	 * @return String that tells if write was successful or not
+	 */
+	public String writeTag(String tagName, String groupName, byte value) {
+		String success; 
+		try {
+			JOpc.coInitialize();
+		}
+		catch(CoInitializeException e1) {
+			e1.printStackTrace();
+		}
+		
+		//create OpcItem
+		OpcItem item1 = new OpcItem(tagName, true, groupName);
+		
+		//create OpcGroup
+		OpcGroup group1 = new OpcGroup(groupName, 500, true, 0.0f);
+		group1.addItem(item1);
+		
+		//connect to OPC and register group/item
+		try {
+			jopc.connect();
+			
+			//add group
+			jopc.addGroup(group1);
+			
+			//register group
+			jopc.registerGroup(group1);
+			
+			//register item
+			jopc.registerItem(group1, item1);
+			
+			//set value of tag
+			Variant var = new Variant(value);
+			item1.setValue(var);
+			
+			//write tag to server
+			jopc.synchWriteItem(group1, item1);
+			
+			//wait 2 sec
+			Thread.sleep(2000);
+			
+			//check to see if tag was written successfully
+			if(jopc.synchReadItem(group1, item1) != null) {
+				success = "successful writing";
+			}
+			else {
+				success = "unsuccessful writing";
+			}
+			
+			//unregister item
+			jopc.unregisterItem(group1, item1);
+			
+			//unregister group
+			jopc.unregiserGroup(group1);
+			
+			JOpc.coUninitialize();
+			
+		}
+		catch(ConnectivityException | ComponentNotFoundException | UnableAddGroupException | UnableAddItemException | SynchWriteException | CoUninitializeException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+	
+	/**
+	 * 
+	 * @param Tag Name (string)
+	 * @param Group Name (string)
+	 * @param Tag Value (short)
+	 * @return String that tells if write was successful or not
+	 */
+	public String writeTag(String tagName, String groupName, short value) {
+		String success; 
+		try {
+			JOpc.coInitialize();
+		}
+		catch(CoInitializeException e1) {
+			e1.printStackTrace();
+		}
+		
+		//create OpcItem
+		OpcItem item1 = new OpcItem(tagName, true, groupName);
+		
+		//create OpcGroup
+		OpcGroup group1 = new OpcGroup(groupName, 500, true, 0.0f);
+		group1.addItem(item1);
+		
+		//connect to OPC and register group/item
+		try {
+			jopc.connect();
+			
+			//add group
+			jopc.addGroup(group1);
+			
+			//register group
+			jopc.registerGroup(group1);
+			
+			//register item
+			jopc.registerItem(group1, item1);
+			
+			//set value of tag
+			Variant var = new Variant(value);
+			item1.setValue(var);
+			
+			//write tag to server
+			jopc.synchWriteItem(group1, item1);
+			
+			//wait 2 sec
+			Thread.sleep(2000);
+			
+			//check to see if tag was written successfully
+			if(jopc.synchReadItem(group1, item1) != null) {
+				success = "successful writing";
+			}
+			else {
+				success = "unsuccessful writing";
+			}
+			
+			//unregister item
+			jopc.unregisterItem(group1, item1);
+			
+			//unregister group
+			jopc.unregiserGroup(group1);
+			
+			JOpc.coUninitialize();
+			
+		}
+		catch(ConnectivityException | ComponentNotFoundException | UnableAddGroupException | UnableAddItemException | SynchWriteException | CoUninitializeException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+	
 	
 	
 	
