@@ -9,12 +9,12 @@ public class whenDataChange {
 		getAllInfo requestTag = new getAllInfo();
 		JSONObject tag = requestTag.getTag(TagName, GroupName);
 		
-		int initialVal = (int)tag.get("value");
-		int checkVal = initialVal;
+		Object initialVal = tag.get("value");
+		Object checkVal = initialVal;
 		while(checkVal == initialVal) {
 			Thread.sleep(1000);
 			JSONObject checkTag = requestTag.getTag(TagName, GroupName);
-			checkVal = (int)checkTag.get("value");
+			checkVal = checkTag.get("value");
 		}
 		return "Value of " + tag.get("itemName") + " has changed to " + checkVal;
 	}
