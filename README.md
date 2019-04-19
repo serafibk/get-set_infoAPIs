@@ -1,4 +1,3 @@
-## get-set_infoAPIs
 ## getAllInfo() API
 Initial set up - 
 The JAR file for this API is stored in Documents-> 02_MDP_Students -> MDP_WN18->CloudTeam -> JARS as serafinakamp.getAllInfo.jar
@@ -26,7 +25,7 @@ Returns a JSONObject with all the properties of the given tag (keys):
 
 “quality”, data type = boolean
 
-Access information of tag by assigning a JSONObject to the return of the function and using .get(“property”)
+Access information 
 
 JSONObject tag = <name> .getTag(tagName, groupName);
 
@@ -52,7 +51,7 @@ Returns a JSONArray of JSONObjects with all the properties of the given tags (ke
 
 “quality”, data type = boolean
 
-# Access information 
+Access information 
 
 List<JSONObject> tags = (JSONObject)<name>.getTags(tagNames, groupNames)
 
@@ -61,14 +60,16 @@ Get information using property names: tags.get(“property”)
 ## getAvailableTagsInGroup() -
 Takes in group name as parameter, returns all online tags in given group in List<String> format
 
-# Access information
+Access information
+
 List<String> availableTags = <name>.getAvailableTagsInGroup(groupName)
 Print out using availableTags.get(i)
 
 ## getExistingGroups() - 
 Takes in no parameters, returns a list of all existing groups on the server in List<String> format
 
-# Access information
+Access information
+
 List<String> groups = <name>.getExistingGroups()
 Print out using groups.get(i)
 	
@@ -84,7 +85,7 @@ Takes in the tag name too modify, its group name and the new value as parameters
 New value is a variant, function supports all types of variants (int, boolean, double, float, etc.)
 Returns a string that tells you if the writing was successful or not
 
-## Use
+Use
 
 setAllInfo <name> = new setAllInfo()
 
