@@ -9,13 +9,13 @@ Import into class using import getInfo.getAllInfo;
 getTag() - 
 Takes in tag name and group name of tag as parameters
 Returns a JSONObject with all the properties of the given tag (keys):
-	“clientHandle”, data type = string
-	“itemName”, data type = string
-	“active”, data type = boolean
-	“accessPath”, data type = string
-	“timeStamp”, data type = gregorian calendar
-	“value”, data type = Variant
-	“quality”, data type = boolean
+“clientHandle”, data type = string
+“itemName”, data type = string
+“active”, data type = boolean
+“accessPath”, data type = string
+“timeStamp”, data type = gregorian calendar
+“value”, data type = Variant
+“quality”, data type = boolean
 Access information of tag by assigning a JSONObject to the return of the function and using .get(“property”)
 JSONObject tag = <name> .getTag(tagName, groupName);
 tag.get(“property”) where “property” is anything from the above list (keys). 
