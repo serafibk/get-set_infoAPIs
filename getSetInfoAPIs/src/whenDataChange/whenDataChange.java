@@ -11,7 +11,7 @@ public class whenDataChange {
 		
 		Object initialVal = tag.get("value");
 		Object checkVal = initialVal;
-		while(checkVal == initialVal) {
+		while(checkVal.equals(initialVal)) {
 			Thread.sleep(1000);
 			JSONObject checkTag = requestTag.getTag(TagName, GroupName);
 			checkVal = checkTag.get("value");

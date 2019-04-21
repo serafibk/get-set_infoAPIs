@@ -81,7 +81,7 @@ public class setAllInfo {
 			Thread.sleep(2000);
 			
 			//check to see if tag was written successfully
-			if(jopc.synchReadItem(group1, item1) != null) {
+			if(jopc.synchReadItem(group1, item1) == value) {
 				success = "successful writing";
 			}
 			else {
@@ -152,7 +152,7 @@ public class setAllInfo {
 			Thread.sleep(2000);
 			
 			//check to see if tag was written successfully
-			if(jopc.synchReadItem(group1, item1) != null) {
+			if(jopc.synchReadItem(group1, item1) == value) {
 				success = "successful writing";
 			}
 			else {
@@ -223,7 +223,7 @@ public class setAllInfo {
 			Thread.sleep(2000);
 			
 			//check to see if tag was written successfully
-			if(jopc.synchReadItem(group1, item1) != null) {
+			if(jopc.synchReadItem(group1, item1).equals(value)) {
 				success = "successful writing";
 			}
 			else {
@@ -294,7 +294,7 @@ public class setAllInfo {
 			Thread.sleep(2000);
 			
 			//check to see if tag was written successfully
-			if(jopc.synchReadItem(group1, item1) != null) {
+			if(jopc.synchReadItem(group1, item1) == value) {
 				success = "successful writing";
 			}
 			else {
@@ -365,7 +365,7 @@ public class setAllInfo {
 			Thread.sleep(2000);
 			
 			//check to see if tag was written successfully
-			if(jopc.synchReadItem(group1, item1) != null) {
+			if(jopc.synchReadItem(group1, item1) == value) {
 				success = "successful writing";
 			}
 			else {
@@ -436,7 +436,7 @@ public class setAllInfo {
 			Thread.sleep(2000);
 			
 			//check to see if tag was written successfully
-			if(jopc.synchReadItem(group1, item1) != null) {
+			if(jopc.synchReadItem(group1, item1) == value) {
 				success = "successful writing";
 			}
 			else {
@@ -507,7 +507,7 @@ public class setAllInfo {
 			Thread.sleep(2000);
 			
 			//check to see if tag was written successfully
-			if(jopc.synchReadItem(group1, item1) != null) {
+			if(jopc.synchReadItem(group1, item1) == value) {
 				success = "successful writing";
 			}
 			else {
