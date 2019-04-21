@@ -1,8 +1,8 @@
 ## getAllInfo() API
 Initial set up - 
-The JAR file for this API is stored in Documents-> 02_MDP_Students -> MDP_WN18->CloudTeam -> JARS as serafinakamp.getAllInfo.jar
+The JAR file for this API is stored in Documents-> 02_MDP_Students -> MDP_WN18->CloudTeam -> JARS as getAllInfo.jar
 Saved on local testbed under src/SerafinaTest
-Add to project build path by right clicking project -> configure build path -> add external JARs -> serafinakamp.getAllInfo.jar (from specified spot in first bullet)
+Add to project build path by right clicking project -> configure build path -> add external JARs -> getAllInfo.jar (from specified spot in first bullet)
 Import into class using import getInfo.getAllInfo;
   
 ## getTag() - 
@@ -75,9 +75,9 @@ Print out using groups.get(i)
 	
 ## setAllInfo() API
 Initial set up - 
-The JAR file for this API is stored in Documents-> 02_MDP_Students -> MDP_WN18->CloudTeam -> JARS as serafinakamp.setAllInfo.jar
+The JAR file for this API is stored in Documents-> 02_MDP_Students -> MDP_WN18->CloudTeam -> JARS as setAllInfo.jar
 Saved on local testbed under src/SerafinaTest
-Add to project build path by right clicking project -> configure build path -> add external JARs -> serafinakamp.setAllInfo.jar (from specified spot in first bullet)
+Add to project build path by right clicking project -> configure build path -> add external JARs -> setAllInfo.jar (from specified spot in first bullet)
 Import into class using import setInfo.setAllInfo;
 
 ## writeTag() - 
