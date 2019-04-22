@@ -61,21 +61,25 @@ public class getAllInfo {
 	    
 	    //connect to OPC to register group/item
 	    try {
+	    		//connect to opc
 	    		jopc.connect();
-	    		//System.out.println("OPC connection successful...")
+	    		
+	    		//add group given
 	    		jopc.addGroup(group);
 	    		
+	    		//register group given
 	    		jopc.registerGroup(group);
-	    		//System.out.println("Group registration successful...");
+	    	
+	    		//register given item to given group
 	    		jopc.registerItem(group, item1);
-	    		//System.out.println("Item registration successful...");
 	    		
+	    		//read tag from server
 	    		OpcItem itemRead = null;
 	    		itemRead = jopc.synchReadItem(group, item1);
-	    		Variant itemReadValue = itemRead.getValue();
-	    		int itemReadDataType = itemRead.getDataType();
-	    		//System.out.println("Data Type: " + itemReadDataType + "Value: " itemReadValue);
-	    		   
+	  
+	    		String name = Variant.getVariantName(itemRead.getDataType());
+	    		
+	    		//create new JSONObject to store tag info
 	    		JSONObject jObj = new JSONObject();
 	    		//add client handle
 	    		jObj.put("clientHandle", itemRead.getClientHandle());
@@ -87,6 +91,8 @@ public class getAllInfo {
 	    		jObj.put("accessPath", itemRead.getAccessPath());
 	    		//add time stamp
 	    		jObj.put("timeStamp", itemRead.getTimeStamp().getTime());
+	    		//add item data type
+	    		jObj.put("dataType", name);
 	    		//add item value
 	    		jObj.put("value", itemRead.getValue());
 	    		//add item quality
@@ -147,24 +153,29 @@ public class getAllInfo {
 		    
 		    //connect to OPC to register group/item
 		    try {
+		    		//connect to opc
 		    		jopc.connect();
-		    		//System.out.println("OPC connection successful...")
+		    		
+		    		//add given group
 		    		jopc.addGroup(group);
 		    		
+		    		//register given group
 		    		jopc.registerGroup(group);
-		    		//System.out.println("Group registration successful...");
+		    		
+		    		//register each tag to group
 		    		for(int i = 0;i<items.size();i++) {
 		    			jopc.registerItem(group, items.get(i));
 			    }
-		    		//System.out.println("Item registration successful...");
 		    		
+		    		//read tags and create JSONArray to store information
 		    		OpcItem itemRead = null;
 		    		JSONArray tagNames = new JSONArray();
 		    		for(int i=0;i<items.size();i++) {
 		    			//read data
 			    		itemRead = jopc.synchReadItem(group, items.get(i));
-			    		int itemReadDataType = itemRead.getDataType();
-			    		Variant itemReadValue = itemRead.getValue();
+			    		
+			    		String name = Variant.getVariantName(itemRead.getDataType());
+			    		
 			    		//store data in json object then arraylist
 			    		JSONObject jObj = new JSONObject();
 			    		//add client handle
@@ -177,17 +188,19 @@ public class getAllInfo {
 			    		jObj.put("accessPath", itemRead.getAccessPath());
 			    		//add time stamp
 			    		jObj.put("timeStamp", itemRead.getTimeStamp().getTime());
+			    		//add item data type
+			    		jObj.put("dataType", name);
 			    		//add item value
 			    		jObj.put("value", itemRead.getValue());
 			    		//add item quality
 			    		jObj.put("quality", itemRead.isQuality());
 		    			tagNames.add(jObj);
 		    		}
-		    		//System.out.println("Data Type: " + itemReadDataType + "Value: " itemReadValue);
+		    		
 		    		JOpc.coUninitialize(); 
 		    		
 		    	
-		    		return tagNames;
+		    		return null;
 		    		
 		    		
 		    		
@@ -236,6 +249,7 @@ public class getAllInfo {
 			   e.printStackTrace();
 		   }
 		   
+		   //try connecting to JOPCBrowser and return all online tags in a given group
 		   try {
 			   browser.connect();
 			   browser.getOpcBranch("");
@@ -275,6 +289,7 @@ public class getAllInfo {
 			   e.printStackTrace();
 		   }
 		   
+		   //try connecting to JOPCBrowser and return all branches
 		   try {
 			   browser.connect();
 			   String[] groups = browser.getOpcBranch("");
