@@ -28,6 +28,10 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
@@ -308,13 +312,18 @@ public class getAllInfo {
 	    }
 	   
 	   /**
-	    * 
-	    * 
-	    * @write information to a .txt file
+	    * @param String of file path where file will be stored
+	    * @param JSONArray of tag values 
+	    * @write information to a file
 	    */
-	   public void writeTagsToFile(String filename, JSONArray tags) {
-		   //TODO write implementation of writing output to a file 
-		   
+	   public void writeTagsToFile(String filePath, JSONArray tags)throws IOException {
+		   //try to find file path to write to and write tags to file
+		   try(FileWriter f = new FileWriter(filePath)){
+			   for(int i = 0;i<tags.size();++i) {
+				   f.write(tags.get(i).toString() + "\n");
+			   }
+		   }	
+		   System.out.println("File successfully created at " + filePath);
 	   }
 	   public String[] readTagsFromFile(String filename) {
 		   //TODO write implmentation of taking in tag names and puting them in a String array
