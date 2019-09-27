@@ -307,5 +307,19 @@ public class getAllInfo {
 	   
 	    }
 	   
+	   /**
+	    * 
+	    * 
+	    * @write information to a .txt file
+	    */
+	   public void writeTagsToFile(String filename, JSONArray tags) {
+		   //TODO write implementation of writing output to a file 
+		   
+	   }
+	   public String[] readTagsFromFile(String filename) {
+		   //TODO write implmentation of taking in tag names and puting them in a String array
+		   
+	   }
+	   
 
 }
