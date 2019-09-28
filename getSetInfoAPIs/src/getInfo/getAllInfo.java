@@ -325,9 +325,37 @@ public class getAllInfo {
 		   }	
 		   System.out.println("File successfully created at " + filePath);
 	   }
-	   public String[] readTagsFromFile(String filename) {
-		   //TODO write implmentation of taking in tag names and puting them in a String array
-		   
+	   public String[][] readTagsFromFile(String TagFilePath, String GroupFilePath)throws IOException {
+		   List<String> tags = new ArrayList<String>();
+		   List<String> groups = new ArrayList<String>();
+		   String tag,group;	   
+		   //try to find file path and read tags from given file
+		   try(FileReader rTags = new FileReader(TagFilePath)){
+			   while(rTags.read() != -1) {
+				   tag="";
+				   while(rTags.read() != 32) {
+					   tag = tag + (char)rTags.read(); 
+				   }
+				   tags.add(tag);
+			   }
+		   }
+		   //try to find file path and read groups from given file
+		   try(FileReader rGroups = new FileReader(GroupFilePath)){
+			   while(rGroups.read() != -1) {
+				   group = "";
+				   while(rGroups.read() != 32) {
+					   group = group + (char)rGroups.read();
+				   }
+				   groups.add(group);
+			   }
+		   }
+		   //put tags and groups into a double string array
+		   String[][] tagsAndGroups = new String[tags.size()][groups.size()];
+		   for(int i = 0;i<tags.size();++i) {
+			   tagsAndGroups[i][0] = tags.get(i);
+			   tagsAndGroups[i][1] = groups.get(i);
+		   }
+		   return tagsAndGroups;
 	   }
 	   
 
