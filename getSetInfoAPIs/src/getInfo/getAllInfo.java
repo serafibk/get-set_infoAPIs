@@ -40,22 +40,21 @@ public class getAllInfo {
 	
 		private JOpc jopc = new JOpc("localhost", "RSLinx OPC Server", "JOPC1");
 		
-	   
+	    private getAllInfo() {
+		   try {
+		   	      JOpc.coInitialize();
+		   	    }
+		    	catch (CoInitializeException e1) {
+		   	      e1.printStackTrace();
+		   	    }
+	    }
 	    
 		/**
 		 * @param tagNameGiven a user inputed tag name to request data from
 		 * @return a JSON Object with tag values (name, active, access path, value, timestamp) 
 		 */
 		@SuppressWarnings("unchecked")
-	    public JSONObject getTag(String tagNameGiven, String groupName) {
-	    	
-			try {
-	   	      JOpc.coInitialize();
-	   	    }
-	    	catch (CoInitializeException e1) {
-	   	      e1.printStackTrace();
-	   	    }
-	   	    
+	   public JSONObject getTag(String tagNameGiven, String groupName) {
 	    //create item with given tag name
 	    OpcItem item1 = new OpcItem(tagNameGiven, true, groupName);
 	    
@@ -119,11 +118,6 @@ public class getAllInfo {
         catch (SynchReadException e) {
           e.printStackTrace();
         }
-        catch (CoUninitializeException e) {
-          e.printStackTrace();
-        }
-	    
-	    JOpc.coUninitialize();	 
 	    
 	    return null;
 	    }
@@ -136,13 +130,6 @@ public class getAllInfo {
 		 */
 		@SuppressWarnings("unchecked")
 		public JSONArray getTags(String[] tagNamesGiven, String[] groupNamesGiven) {
-			try {
-	   	      JOpc.coInitialize();
-	   	    }
-	    	catch (CoInitializeException e1) {
-	   	      e1.printStackTrace();
-	   	    }
-		   	    
 		    //create items with given tag names
 			ArrayList<OpcItem> items = new ArrayList<OpcItem>();
 			for(int i = 0; i<tagNamesGiven.length;i++) {
@@ -201,8 +188,6 @@ public class getAllInfo {
 		    			tagNames.add(jObj);
 		    		}
 		    		
-		    		JOpc.coUninitialize(); 
-		    		
 		    	
 		    		return null;
 		    		
@@ -224,7 +209,100 @@ public class getAllInfo {
 		    catch (SynchReadException e) {
 		        e.printStackTrace();
 		      }
-		    catch (CoUninitializeException e) {
+		    
+		    
+		    
+			    ArrayList<String> noTags = new ArrayList<String>();
+			    noTags.add("Tag Names Not Found");
+			    return null;
+		    
+	   }
+		/**
+		 * 
+		 * @param a double array of tagsAndGroupsGiven 
+		 * @return a JSONArray of tags with their values 
+		 */
+		@SuppressWarnings("unchecked")
+		public JSONArray getTags(String[][] tagAndGroups) {
+		    //create items with given tag names
+			ArrayList<OpcItem> items = new ArrayList<OpcItem>();
+			for(int i = 0; i<tagNamesGiven.length;i++) {
+				for(int j = 0; j<tagsAndGroups[0])
+				items.add(new OpcItem(tagNamesGiven[i], true, groupNamesGiven[i]));
+			}
+		    
+		    //create opc group
+		    OpcGroup group = new OpcGroup("group1", true, 500, 0.0f);
+		    for(int i = 0;i<items.size();i++) {
+		    		group.addItem(items.get(i));
+		    }
+		    
+		    //connect to OPC to register group/item
+		    try {
+		    		//connect to opc
+		    		jopc.connect();
+		    		
+		    		//add given group
+		    		jopc.addGroup(group);
+		    		
+		    		//register given group
+		    		jopc.registerGroup(group);
+		    		
+		    		//register each tag to group
+		    		for(int i = 0;i<items.size();i++) {
+		    			jopc.registerItem(group, items.get(i));
+			    }
+		    		
+		    		//read tags and create JSONArray to store information
+		    		OpcItem itemRead = null;
+		    		JSONArray tagNames = new JSONArray();
+		    		for(int i=0;i<items.size();i++) {
+		    			//read data
+			    		itemRead = jopc.synchReadItem(group, items.get(i));
+			    		
+			    		String name = Variant.getVariantName(itemRead.getDataType());
+			    		
+			    		//store data in json object then arraylist
+			    		JSONObject jObj = new JSONObject();
+			    		//add client handle
+			    		jObj.put("clientHandle", itemRead.getClientHandle());
+			    		//add item name
+			    		jObj.put("itemName", itemRead.getItemName());
+			    		//add item  activity
+			    		jObj.put("active", itemRead.isActive());
+			    		//add access path
+			    		jObj.put("accessPath", itemRead.getAccessPath());
+			    		//add time stamp
+			    		jObj.put("timeStamp", itemRead.getTimeStamp().getTime());
+			    		//add item data type
+			    		jObj.put("dataType", name);
+			    		//add item value
+			    		jObj.put("value", itemRead.getValue());
+			    		//add item quality
+			    		jObj.put("quality", itemRead.isQuality());
+		    			tagNames.add(jObj);
+		    		}
+		    		
+		    		
+		    	
+		    		return null;
+		    		
+		    		
+		    		
+			    }
+			catch (ConnectivityException e) {
+			    e.printStackTrace();
+			  }
+		    catch (ComponentNotFoundException e) {
+		        e.printStackTrace();
+		      } 
+		    catch (UnableAddGroupException e) {
+		        e.printStackTrace();
+		      }  
+		    catch (UnableAddItemException e) {
+		        e.printStackTrace();
+		      }
+		    catch (SynchReadException e) {
 		        e.printStackTrace();
 		      }
 		    
@@ -356,6 +434,49 @@ public class getAllInfo {
 			   tagsAndGroups[i][1] = groups.get(i);
 		   }
 		   return tagsAndGroups;
+	   }
+	   public String[][] readTagsFromFile(String TagsAndGroupsFilePath)throws IOException {
+		   List<String> tags = new ArrayList<String>();
+		   List<String> groups = new ArrayList<String>();
+		   String tag,group;	   
+		   //try to find file path and read tags from given file
+		   try(FileReader rTagsGroups = new FileReader(TagsAndGroupsFilePath)){
+			   while((g=rTags.read()) != -1) {
+				   tag="";
+				   while(g!= 32) {
+					   tag = tag + (char)rTags.read(); 
+				   }
+				   tags.add(tag);
+			   }
+		   }
+		   //try to find file path and read groups from given file
+		   try(FileReader rGroups = new FileReader(GroupFilePath)){
+			   while(rGroups.read() != -1) {
+				   group = "";
+				   while(rGroups.read() != 32) {
+					   group = group + (char)rGroups.read();
+				   }
+				   groups.add(group);
+			   }
+		   }
+		   //put tags and groups into a double string array
+		   String[][] tagsAndGroups = new String[tags.size()][groups.size()];
+		   for(int i = 0;i<tags.size();++i) {
+			   tagsAndGroups[i][0] = tags.get(i);
+			   tagsAndGroups[i][1] = groups.get(i);
+		   }
+		   return tagsAndGroups;
+	   }
+	   
+	   //to couninitialize JOpc at the end 
+	   //THIS FUNCTION MUST ALWAYS BE CALLED WHEN USED for now
+	   public endCollection() {
+		   try {
+			   JOpc.coUninitialize();
+		   }
+		   catch (CoUninitializeException e) {
+			   e.printStackTrace();
+		   }
 	   }
 	   
 
